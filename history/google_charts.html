@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <!--Code written by Christine Mendoza. Please ask me before reproducing.-->
+  <head>
+    <base target="_top">
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the controls package.
+      // Packages for all the other charts you need will be loaded
+      // automatically by the system.
+      google.charts.load('current', {'packages':['corechart', 'controls']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawGIDDashboard);
+      function drawGIDDasboard() {
+        var queryString = encodeURIComponent('SELECT A, H, O, Q, R, U LIMIT 5 OFFSET 8');
+
+        var query = new google.visualization.Query(
+            'https://docs.google.com/spreadsheets/d/1-MQQChTRaRq9TV3mSOCV_r1vLAuG_WxR-3YxAQ51GkY/edit#gid=1260514956range=B14:C57' + queryString);
+        query.send(handleQueryResponse);
+      }
+
+      function handleQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
+        }
+
+        var data = response.getDataTable();
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, { height: 400 });
+      }
+    </script>
+  </head>
+  <body>
+    <!--Div that will hold the dashboard-->
+    <div id="dashboard_div">
+      <!--Divs that will hold each control and chart-->
+      <div id="filter_div"></div>
+      <div id="chart_div"></div>
+    </div>
+  </body>
+</html>

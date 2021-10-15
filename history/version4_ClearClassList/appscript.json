@@ -1,0 +1,39 @@
+{
+    "timeZone": "America/New_York",
+    "dependencies": {},
+    "exceptionLogging": "STACKDRIVER",
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/drive.appdata",
+      "https://www.googleapis.com/auth/spreadsheets.currentonly",
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/forms.currentonly",
+      "https://www.googleapis.com/auth/forms",
+      "https://www.googleapis.com/auth/script.locale"
+    ],
+    "urlFetchWhitelist": [
+      "https://docs.google.com/"
+    ],
+    "runtimeVersion": "V8",
+    "addOns": {
+      "common": {
+        "name": "Class Records Manager",
+        "logoUrl": "https://docs.google.com/drawings/d/e/2PACX-1vQFn0k16seL4h8CGe1gjSTtNj37Q7P9kVPPQDrojzxoatuWKKAHXaRg7JR7FPeryD0QwpcA23gL2J1A/pub?w=342&h=306",
+        "useLocaleFromApp": true,
+        "homepageTrigger": {
+          "runFunction": "onHomepage",
+          "enabled": true
+        },
+        "universalActions": [
+          {
+            "label": "Provide Feedback",
+            "openLink": "https://docs.google.com/forms/d/e/1FAIpQLSfWvVxtXUXnUtUt258ypDvrdVCkJhD27tupPE5LAHPVpbnNNQ/viewform"
+          },
+          {
+            "label": "Delete Class List - DEVELOPMENT ONLY",
+            "runFunction": "deleteClassList"
+          }
+        ]
+      },
+      "drive": {}
+    }
+  }
