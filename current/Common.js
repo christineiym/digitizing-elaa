@@ -3,32 +3,12 @@
  * Specifically, it lets you create and access a form to collect student data with
  * and the associated spreadsheet that serves as a class database.
  *
- * In the current development phase, there are two ways to install it:
+ * In the current development phase, the add-on can be installed by doing the following:
  * 1) Email christine.mendoza@unc.edu with the test Gmail account
- *  with which you want to use the Add-on.
- * 2) (not recommended due to the time and effort involved) Copy the code and then deploy it. 
- *  This involves several steps:
- *  (1) Create a new AppsScript file and copy the code from Common.gs into it.
- *  (2) Go to project settings (the gear icon on the left in the new AppsScript editor). 
- *    Under 'General Settings', check 'Show "appsscript.json" manifest file in editor'.
- *    Go back to the project code and copy the code from appscript.json into it.
- *  (3) Follow the steps in https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project to create a project on Google Cloud.
- *      - If you do not have a Google Cloud account already, you will have to
- *        create one. You should not have to connect your account to any form of payment.
- *      - If you are using a personal Gmail account, you do not have to worry
- *        about if you have the 'resourcemanager.projects.create' permission;
- *        you should already have that permission.
- *      - I recommend using the Cloud Console to create a new project.
- *      - Under OAuth scopes, paste each of the scopes listed under "oauthScopes"
- *        in appsscript.json.
- *   (4) Go to project settings again. Under 'Google Cloud Platform (GCP) Project',
- *     click the button and follow the instructions to connect the AppsScript file
- *     to the Google Cloud Project you created in step (3).
- *   (5) Click the arrow next to Deploy and select 'New Deployment' from the dropdown
- *      menu that appears. The type should be 'Add-on.' Add a description and hit 'Deploy'.
- *   (6) Refresh your Google Drive. You should see an 'A+' icon appear in the right sidebar.
- *      Click on it and then follow the instructions to allow the add-on to be installed
- *      and to let it access files within the necessary scopes.
+ *  with which you want to use the Add-on. I (Christine) will give you read access
+ *  to the add-on code file.
+ * 2) Follow the steps in https://developers.google.com/workspace/add-ons/how-tos/testing-gsuite-addons#install_an_unpublished_add-on to install the add-on. The page
+ *  also has instructions for uninstalling the add-on.
  * 
  * Please do not hesitate to email me directly at christine.mendoza@unc.edu with any questions, 
  * errors, concerns, and/or feedback! In the installed add-on, you can also provide feedback by
@@ -50,19 +30,56 @@ function onHomepage(e) {
   return createClassManagerCard(true);
 }
 
+function createHomepageCard(isHomepage) {
+  // Explicitly set the value of isHomepage as false if null or undefined.
+  if (!isHomepage) {
+    isHomepage = false;
+  }
+
+  // Create a new card.
+  var card = CardService.newCardBuilder();
+
+    
+  // Create buttons for the classes created.
+  // Note: Action parameter keys and values must be strings.
+  var classes = PropertiesService.getUserProperties().getProperties();
+  for (var spreadsheet in classes) {
+    // Create a section with a set of buttons for each class.
+    var section = CardService.newCardSection();
+    var buttonSet = CardService.newButtonSet();
+    
+    // Create button for spreadsheet.
+    var buttonSpreadsheet = CardService.newTextButton()
+      .setText('Access Spreadsheet')  // how to access spreadsheet name?
+      .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
+      .setOpenLink(CardService.newOpenLink()
+        .setUrl(spreadsheet));
+    buttonSet.addButton(buttonSpreadsheet);
+    
+    // Create button for form.
+    var buttonForm = CardService.newTextButton()
+      .setText('Access Form')  // how to access spreadsheet name?
+      .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
+      .setOpenLink(CardService.newOpenLink()
+        .setUrl(classes[spreadsheet]));
+    buttonSet.addButton(buttonForm);
+
+    section.addWidget(buttonSet);
+    card.addSection(section);
+  }
+
+  // After all necessary components are added, return the card.
+  return card.build();
+}
+
 /**
- * Creates a card, overlayed with the text.
+ * Creates the class manager card.
  * 
  * @param {Boolean} isHomepage True if the card created here is a homepage;
  *      false otherwise. Defaults to false.
  * @return {CardService.Card} The assembled card.
  */
-function createClassManagerCard(isHomepage) {
-  // Explicitly set the value of isHomepage as false if null or undefined.
-  if (!isHomepage) {
-    isHomepage = false;
-  }
-  
+function createClassManagerCard() { 
   // Create a new card.
   var card = CardService.newCardBuilder();
   
