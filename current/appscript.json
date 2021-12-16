@@ -25,6 +25,10 @@
       },
       "universalActions": [
         {
+          "label": "About Add-on",
+          "runFunction": "createAboutCard"
+        },
+        {
           "label": "Provide Feedback",
           "openLink": "https://docs.google.com/forms/d/e/1FAIpQLSfWvVxtXUXnUtUt258ypDvrdVCkJhD27tupPE5LAHPVpbnNNQ/viewform"
         },
