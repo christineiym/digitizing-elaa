@@ -16,17 +16,6 @@ class Classroom {
   //   }
   // }
 
-  addStudent() {
-    // TODO
-  }
-
-  removeStudent() {
-    // TODO
-    // if records are associated with student, move to archive
-    // else, delete?
-    // the above is only a problem if student data are kept in spreadsheet
-  }
-
   generateReports(students, startDate, endDate, numExamples) {
     // TODO
     // 1) Actually generate reports

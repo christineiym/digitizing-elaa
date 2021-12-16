@@ -1,0 +1,4 @@
+const ORANGE = "#FF8000";
+const NEW_STUDENT_PLACEHOLDER = "New Student";
+const STUDENT_LIST_PLACEHOLDER = [];
+const GENERIC_PLACEHOLDER = "";
