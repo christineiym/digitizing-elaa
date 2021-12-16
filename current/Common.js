@@ -24,10 +24,27 @@
  * @return {CardService.Card} The card to show to the user.
  */
 function onHomepage(e) {
-  console.log(e);
+  // console.log(e);
+
+  // var classesUpdated = PropertiesService.getUserProperties()
+  // var data = classesUpdated.getProperties();
+  // for (var key in data) {
+  //     Logger.log('Key: %s, Value: %s', key, data[key]);
+  // };
+
+  // var testClassObject = JSON.parse(classesUpdated.getProperty("Fireflies"));
+  // testClassObject.formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfiRDtR6G_JUZrJKrayBDi6j6q1Ppe7L3RT89wfa5dhKrZZ4g/viewform";
+  // testClassObject.spreadsheetURL = "https://docs.google.com/spreadsheets/d/16mo3-FLBmHezSpzuwRirywtLA9vsGKQQrgLRFdxYSeg/edit#gid=1425994779";
+  // classesUpdated.setProperty("Fireflies", JSON.stringify(testClassObject));
+
+  // var classesUpdatedAgain = PropertiesService.getUserProperties()
+  // var data = classesUpdatedAgain.getProperties();
+  // for (var key in data) {
+  //     Logger.log('Key: %s, Value: %s', key, data[key]);
+  // };
 
   // Create and return the card.
-  return createClassManagerCard(true);
+  return createHomepageCard(true);
 }
 
 function createHomepageCard(isHomepage) {
@@ -39,34 +56,62 @@ function createHomepageCard(isHomepage) {
   // Create a new card.
   var card = CardService.newCardBuilder();
 
-    
   // Create buttons for the classes created.
   // Note: Action parameter keys and values must be strings.
   var classes = PropertiesService.getUserProperties().getProperties();
-  for (var spreadsheet in classes) {
-    // Create a section with a set of buttons for each class.
+  for (var classroom in classes) {
+    // Obtain access to class information.
+    var name = classroom;
+    var clasroomDetails = JSON.parse(classes[classroom]);
+
+    // Create a section with a labelled set of buttons for each class.
     var section = CardService.newCardSection();
+    var nameParagraph = CardService.newTextParagraph()
+      .setText(name);
     var buttonSet = CardService.newButtonSet();
     
     // Create button for spreadsheet.
     var buttonSpreadsheet = CardService.newTextButton()
-      .setText('Access Spreadsheet')  // how to access spreadsheet name?
+      .setText('View Data')
       .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
       .setOpenLink(CardService.newOpenLink()
-        .setUrl(spreadsheet));
+        .setUrl(clasroomDetails.spreadsheetURL)
+        .setOpenAs(CardService.OpenAs.FULL_SIZE)
+        .setOnClose(CardService.OnClose.NOTHING));
     buttonSet.addButton(buttonSpreadsheet);
     
     // Create button for form.
     var buttonForm = CardService.newTextButton()
-      .setText('Access Form')  // how to access spreadsheet name?
+      .setText('View Form')  // how to access spreadsheet name?
       .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
       .setOpenLink(CardService.newOpenLink()
-        .setUrl(classes[spreadsheet]));
+        .setUrl(clasroomDetails.spreadsheetURL)
+        .setOpenAs(CardService.OpenAs.FULL_SIZE)
+        .setOnClose(CardService.OnClose.NOTHING));
     buttonSet.addButton(buttonForm);
 
+    section.addWidget(nameParagraph);
     section.addWidget(buttonSet);
     card.addSection(section);
   }
+
+  // Create the settings button and new report button.
+  var fixedFooter = CardService.newFixedFooter()
+      .setPrimaryButton(
+          CardService.newTextButton()
+              .setText("Create Report")
+              .setOnClickAction(
+                  CardService.newAction()
+                      .setFunctionName(
+                          "deleteClassList")))
+      .setSecondaryButton(
+          CardService.newTextButton()
+              .setText("Manage List")
+              .setOnClickAction(
+                  CardService.newAction()
+                      .setFunctionName(
+                          "deleteClassList")));
+  card.setFixedFooter(fixedFooter);
 
   // After all necessary components are added, return the card.
   return card.build();
@@ -75,8 +120,6 @@ function createHomepageCard(isHomepage) {
 /**
  * Creates the class manager card.
  * 
- * @param {Boolean} isHomepage True if the card created here is a homepage;
- *      false otherwise. Defaults to false.
  * @return {CardService.Card} The assembled card.
  */
 function createClassManagerCard() { 
