@@ -15,6 +15,11 @@
  * clicking the three dots at the top and filling out the form accessed through 'Provide Feedback'.
  */
 
+/**
+ * Creates the homepage card.
+ * 
+ * @return {CardService.Card} The assembled card.
+ */
 function createHomepageCard(isHomepage) {
   // Explicitly set the value of isHomepage as false if null or undefined.
   if (!isHomepage) {
@@ -157,64 +162,133 @@ function createSelectStudentsForReportsCard(className) {
   // Create a new card.
   var card = CardService.newCardBuilder();
 
-  // TODO: Completely change!!
+  var currentClassInfo = JSON.parse(classesUpdated.getProperty(className));
+  var currentStudents = currentClassInfo.students;
 
   // Add instructions.
   var infoSection = CardService.newCardSection();
   var instructionParagraph = CardService.newTextParagraph()
-    .setText("<b>Select student(s) for which to create reports.</b>");
+    .setText("<b>Select student(s) to generate reports for.</b>");
   infoSection.addWidget(instructionParagraph);
   card.addSection(infoSection);
 
-  // Create buttons for the classes created.
-  // Note: Action parameter keys and values must be strings.
-  var classes = PropertiesService.getUserProperties().getProperties();
-  for (var classroom in classes) {
-    var name = classroom;
-
-    // Create a section with a labelled set of buttons for each class.
-    var section = CardService.newCardSection();
-    var nameText = CardService.newDecoratedText()
-      .setText(name)
-      .setStartIcon(CardService.newIconImage()
-        .setAltText("Star")
-        .setIcon(CardService.Icon.STAR));
-    var buttonSet = CardService.newButtonSet();
-
-    // Create edit button.
-    var buttonSpreadsheet = CardService.newTextButton()
-      .setText('Edit')
-      .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
-      .setBackgroundColor(ORANGE)
-      .setOnClickAction(CardService.newAction()
-        .setFunctionName("onEditClass")
-        .setParameters({ className: name }));
-    buttonSet.addButton(buttonSpreadsheet);
-
-    // Create delete button.
-    var buttonForm = CardService.newTextButton()
-      .setText('Delete')
-      .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
-      .setBackgroundColor(ORANGE)
-      .setOnClickAction(CardService.newAction()
-        .setFunctionName("onDeleteClass")
-        .setParameters({ className: name }));
-    buttonSet.addButton(buttonForm);
-
-    section.addWidget(nameText);
-    section.addWidget(buttonSet);
-    card.addSection(section);
+  // Create checkboxes for each student.
+  var selectionSection = CardService.newCardSection();
+  var checkboxGroup = CardService.newSelectionInput()
+    .setType(CardService.SelectionInputType.CHECK_BOX)
+    .setTitle("Students")
+    .setFieldName(STUDENT_LIST_SELECTIONS_FIELD_NAME);
+  for (var student in currentStudents) {
+    checkboxGroup.addItem(student, student, true);
   }
+  card.addSection(selectionSection);
 
-  // Create the new class button.
+  // Create the Next button.
   var fixedFooter = CardService.newFixedFooter()
     .setPrimaryButton(
       CardService.newTextButton()
-        .setText("Save")
+        .setText("Next")
+        .setOnClickAction(
+          CardService.newAction()
+            .setFunctionName("onSelectStudentsForReports")
+            .setParameters({ className: className })))
+  card.setFixedFooter(fixedFooter);
+
+  // After all necessary components are added, return the card.
+  return card.build();
+}
+
+/**
+ * Creates the customize reports card.
+ * 
+ * @return {CardService.Card} The assembled card.
+ */
+function createCustomizeReportsCard(className, selectedStudents) {
+  // Create a new card.
+  var card = CardService.newCardBuilder();
+
+  // Add title.
+  var infoSection = CardService.newCardSection();
+  var instructionParagraph = CardService.newTextParagraph()
+    .setText("<b>Customize Report</b>");
+  infoSection.addWidget(instructionParagraph);
+  card.addSection(infoSection);
+
+  // Set start and end dates.
+  var dateSection = CardService.newCardSection();
+  var startDatePicker = CardService.newDatePicker()
+    .setTitle("Start Date:")
+    .setFieldName("start_date")
+    // Set default value to approximately one year before today
+    .setValueInMsSinceEpoch(new Date().setFullYear(new Date().getFullYear() - ONE_YEAR_INCREMENT).getTime());
+  dateSection.addWidget(startDatePicker);
+  var endDatePicker = CardService.newDatePicker()
+    .setTitle("End Date:")
+    .setFieldName("end_date")
+    // Set default value to today
+    .setValueInMsSinceEpoch(new Date().getTime());
+  dateSection.addWidget(endDatePicker);
+  card.addSection(dateSection);
+
+  // Set maximum number of examples to include.
+  var selectionSection = CardService.newCardSection();
+  var checkboxGroup = CardService.newSelectionInput()
+    .setType(CardService.SelectionInputType.DROPDOWN)
+    .setTitle("Students")
+    .setFieldName(STUDENT_LIST_SELECTIONS_FIELD_NAME);
+  for (var student in currentStudents) {
+    checkboxGroup.addItem(student, student, true);
+  }
+  card.addSection(selectionSection);
+
+  // Create the Generate Reports button.
+  var fixedFooter = CardService.newFixedFooter()
+    .setPrimaryButton(
+      CardService.newTextButton()
+        .setText("Generate Reports")
+        .setOnClickAction(
+          CardService.newAction()
+            .setFunctionName("onReportGeneration")
+            .setParameters({ className: className, selectedStudents: selectedStudents })))
+  card.setFixedFooter(fixedFooter);
+
+  // After all necessary components are added, return the card.
+  return card.build();
+}
+
+/**
+ * Creates the reports generated confirmation card.
+ * 
+ * @return {CardService.Card} The assembled card.
+ */
+function createReportsGeneratedCard() {
+  // Create a new card.
+  var card = CardService.newCardBuilder();
+
+  // Add information.
+  var infoSection = CardService.newCardSection();
+  var instructionParagraph = CardService.newTextParagraph()
+    .setText("<b>Report(s) have been generated!</b>");
+  infoSection.addWidget(instructionParagraph);
+  card.addSection(infoSection);
+
+  // Create the settings button and new report button.
+  var fixedFooter = CardService.newFixedFooter()
+    .setPrimaryButton(
+      CardService.newTextButton()
+        .setText("View Reports")
+        // TODO: change to link to reports sheet within spreadsheet
+        .setOpenLink(CardService.newOpenLink()
+          .setUrl(clasroomDetails.spreadsheetURL)
+          .setOpenAs(CardService.OpenAs.FULL_SIZE)
+          .setOnClose(CardService.OnClose.NOTHING)))
+    .setSecondaryButton(
+      CardService.newTextButton()
+        .setText("Home")
         .setOnClickAction(
           CardService.newAction()
             .setFunctionName(
-              "onSaveStudentListEdits")))
+              "createHomepageCard")));
   card.setFixedFooter(fixedFooter);
 
   // After all necessary components are added, return the card.
@@ -346,15 +420,16 @@ function createManageStudentListCard(className) {
   infoSection.addWidget(instructionParagraph);
   card.addSection(infoSection);
 
-  // Create buttons for the classes created.
+  // Create input fields for each student.
   // Note: Action parameter keys and values must be strings.
   var buttonSet = CardService.newButtonSet();
-  for (var student in students) {
+  for (var student in currentStudents) {
     var name = student;
 
     // Create text input field for form.
     var inputName = CardService.newTextInput()
-      .setFieldName(name);
+      .setFieldName(name)
+      .setValue(name);  // set default name to be the name currently stored.
     infoSection.addWidget(inputName);
 
     // Create delete button.

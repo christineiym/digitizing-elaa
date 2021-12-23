@@ -26,8 +26,6 @@ function onDeleteStudent(e, className, studentName) {
 }
 
 function onSaveStudentListEdits(e, className, isLastSave) {
-    var currentStudents;
-    var classes = PropertiesService.getUserProperties().getProperties();
     var classInfo = JSON.parse(classesUpdated.getProperty(className));
     var pastClassNames = classInfo.students;
     var newNames = [];
@@ -36,8 +34,11 @@ function onSaveStudentListEdits(e, className, isLastSave) {
         newNames.push(newName);
     }
 
+    classInfo.students = newNames;
+    PropertiesService.getUserProperties().setProperty(className, JSON.stringify(classInfo));
+
     if (isLastSave) {
-        createHomepageCard();
+        createHomepageCard();  // TODO: check if it pops all other cards off the stack
     } else {
         createManageStudentListCard(className);
     }

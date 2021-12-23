@@ -1,11 +1,9 @@
-function onSelectClassForReports(className) {
-    // TODO
+function onSelectStudentsForReports(e, className) {
+    selectedStudents = e.commonEventObject.formInputs.STUDENT_LIST_SELECTIONS_FIELD_NAME.stringInputs.value;
+
+    createCustomizeReportsCard(className, selectedStudents);
 }
 
-function onSelectStudentsForReports(className, students) {
-    // TODO
-}
-
-function onReportGeneration() {
-    // TODO
+function onReportGeneration(e, className, selectedStudents) {
+    // TODO: actually create reports
 }

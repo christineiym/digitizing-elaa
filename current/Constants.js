@@ -1,4 +1,6 @@
 const ORANGE = "#FF8000";
 const NEW_STUDENT_PLACEHOLDER = "New Student";
 const STUDENT_LIST_PLACEHOLDER = [];
+const STUDENT_LIST_SELECTIONS_FIELD_NAME = "student_list_selections";
 const GENERIC_PLACEHOLDER = "";
+const ONE_YEAR_INCREMENT = 1;
