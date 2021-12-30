@@ -1,0 +1,11 @@
+const ORANGE = "#FF8000";
+const NEW_STUDENT_PLACEHOLDER = "New Student";
+const STUDENT_LIST_PLACEHOLDER = [];
+const STUDENT_LIST_SELECTIONS_FIELD_NAME = "student_list_selections";
+const START_DATE_FIELD_NAME = "start_date";
+const END_DATE_FIELD_NAME = "end_date";
+const MAX_EXAMPLES_FIELD_NAME = "max_examples";
+const GENERIC_PLACEHOLDER = "";
+const ONE_YEAR_INCREMENT = 1;
+const LIMIT_MAX_EXAMPLES = 5;  // TODO: change to a clearer name
+const MAXIMUM = "Maximum";
