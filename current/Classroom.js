@@ -15,12 +15,4 @@ class Classroom {
   //     this.name = newName;
   //   }
   // }
-
-  generateReports(students, startDate, endDate, numExamples) {
-    // TODO
-    // 1) Actually generate reports
-    // 2) Add links in a new column to class spreadsheet
-    // return link to reports? need folder?
-    // or put spreadsheet link in confirmation message
-  }
 }

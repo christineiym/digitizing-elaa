@@ -38,7 +38,7 @@ function onSaveStudentListEdits(e, className, isLastSave) {
     PropertiesService.getUserProperties().setProperty(className, JSON.stringify(classInfo));
 
     if (isLastSave) {
-        createHomepageCard();  // TODO: check if it pops all other cards off the stack
+        createClassManagerCard();
     } else {
         createManageStudentListCard(className);
     }

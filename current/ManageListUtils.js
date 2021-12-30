@@ -98,15 +98,13 @@ function setUpForm(ss, values) {
 }
 
 function onDeleteClass(className) {
-  // TODO
+  var userProperties = PropertiesService.getUserProperties();
+  userProperties.deleteProperty(className);
 
-  // Need to display confirmation message? or just refresh card to show no class
+  // TODO: check if should return card, or update card through a more complicated action
+  return createClassManagerCard();
 }
 
 function onEditClass(className) {
-  // TODO
-}
-
-function onRenameClass(className) {
-  // TODO (later?)
+  return createManageStudentListCard(className);
 }

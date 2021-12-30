@@ -33,7 +33,7 @@ function createHomepageCard(isHomepage) {
   // var backgroundSection = CardService.newCardSection();
   // var backgroundImage = CardService.newImage()
   //   .setAltText("A background image with a bird, cloud, and sun.")
-  //   .setImageUrl("https://docs.google.com/drawings/d/1lt3jbrl17WCVFJvQC_mE3NO7-smbLc3gk8ewgnJSL_I/edit?usp=sharing");
+  //   .setImageUrl("https://photos.app.goo.gl/kY4bd2UpvYWBrgT17");
   // backgroundSection.addWidget(backgroundImage);
   // card.addSection(backgroundSection);
 
@@ -129,7 +129,6 @@ function createReportGeneratorCard() {
   for (var classroom in classes) {
     // Obtain access to class information.
     var name = classroom;
-    var clasroomDetails = JSON.parse(classes[classroom]);
 
     // Create a section with a labelled set of buttons for each class.
     var section = CardService.newCardSection();
@@ -218,13 +217,13 @@ function createCustomizeReportsCard(className, selectedStudents) {
   var dateSection = CardService.newCardSection();
   var startDatePicker = CardService.newDatePicker()
     .setTitle("Start Date:")
-    .setFieldName("start_date")
+    .setFieldName(START_DATE_FIELD_NAME)
     // Set default value to approximately one year before today
     .setValueInMsSinceEpoch(new Date().setFullYear(new Date().getFullYear() - ONE_YEAR_INCREMENT).getTime());
   dateSection.addWidget(startDatePicker);
   var endDatePicker = CardService.newDatePicker()
     .setTitle("End Date:")
-    .setFieldName("end_date")
+    .setFieldName(END_DATE_FIELD_NAME)
     // Set default value to today
     .setValueInMsSinceEpoch(new Date().getTime());
   dateSection.addWidget(endDatePicker);
@@ -232,13 +231,14 @@ function createCustomizeReportsCard(className, selectedStudents) {
 
   // Set maximum number of examples to include.
   var selectionSection = CardService.newCardSection();
-  var checkboxGroup = CardService.newSelectionInput()
+  var dropdownGroup = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.DROPDOWN)
-    .setTitle("Students")
-    .setFieldName(STUDENT_LIST_SELECTIONS_FIELD_NAME);
-  for (var student in currentStudents) {
-    checkboxGroup.addItem(student, student, true);
+    .setTitle("Maximum number of examples to include:")
+    .setFieldName(MAX_EXAMPLES_FIELD_NAME);
+  for (let i = 0; i < LIMIT_MAX_EXAMPLES; i++) {  // TODO: customize max number of examples
+    dropdownGroup.addItem(i, i, false);
   }
+  dropdownGroup.addItem(MAXIMUM, MAXIMUM, false);  // TODO: preselect?
   card.addSection(selectionSection);
 
   // Create the Generate Reports button.
@@ -360,6 +360,13 @@ function createClassManagerCard() {
           CardService.newAction()
             .setFunctionName(
               "createNewClassSetUpCard")))
+    .setSecondaryButton(
+      CardService.newTextButton()
+        .setText("Done")
+        .setOnClickAction(
+          CardService.newAction()
+            .setFunctionName(
+              "createHomepageCard")));
   card.setFixedFooter(fixedFooter);
 
   // After all necessary components are added, return the card.
@@ -416,7 +423,7 @@ function createManageStudentListCard(className) {
   // Add title.
   var infoSection = CardService.newCardSection();
   var instructionParagraph = CardService.newTextParagraph()
-    .setText("<b>Students</b>");
+    .setText("<b>Students in " + className + " </b>");
   infoSection.addWidget(instructionParagraph);
   card.addSection(infoSection);
 
@@ -488,7 +495,7 @@ function createAboutCard() {
   // Add information.
   var infoSection = CardService.newCardSection();
   var instructionParagraph = CardService.newTextParagraph()
-    .setText("<u><b>Purpose</b></u><br>To help teachers of students with special needs in generating and organizing class reports.<br><br><u><b>Disclaimer</b></u><br>While this was developed to the best of the developer’s abilities, there may be some bugs.All code is provided as-is, but feel free to provide<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfWvVxtXUXnUtUt258ypDvrdVCkJhD27tupPE5LAHPVpbnNNQ/viewform\">feedback</a>!<br><br><u><b>Source Code</b></u><br>See on GitHub at <a href=\"https://github.com/christineiym/digitizing-elaa\">this link</a>.");
+    .setText("<u><b>Purpose</b></u><br>To help teachers of students with special needs in generating and organizing class reports.<br><br><u><b>Disclaimer</b></u><br>While this was developed to the best of the developer’s abilities, there may be some bugs. All code is provided as-is, but feel free to provide <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfWvVxtXUXnUtUt258ypDvrdVCkJhD27tupPE5LAHPVpbnNNQ/viewform\">feedback</a>!<br><br><u><b>Source Code</b></u><br>See on GitHub at <a href=\"https://github.com/christineiym/digitizing-elaa\">this link</a>.");
   infoSection.addWidget(instructionParagraph);
   card.addSection(infoSection);
 
