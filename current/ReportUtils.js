@@ -9,11 +9,6 @@ function onReportGeneration(e, className, selectedStudents) {
     var startDate = e.commonEventObject.formInputs.START_DATE_FIELD_NAME.dateInput;
     var endDate = e.commonEventObject.formInputs.END_DATE_FIELD_NAME.dateInput;
     var numExamplesStr = e.commonEventObject.formInputs.MAX_EXAMPLES_FIELD_NAME.stringInputs.value[0];
-
-    // Determine the number of examples to include.
-    if (numExamplesStr === MAXIMUM) {
-        numExamplesStr = getAbsoluteMaxExamples(className);
-    }
     var numExamples = parseInt(numExamplesStr);
 
     for (student in selectedStudents) {
@@ -26,16 +21,13 @@ function onReportGeneration(e, className, selectedStudents) {
     // and put spreadsheet link in confirmation message
 }
 
-function getAbsoluteMaxExamples(className) {
-    // TODO: implement, unless there is a better way to write code
-}
-
 /**
  * Creates a report document for a student.
  * 
  * @return {string? URL?} Link to the document.
  */
 function generateDocument(className, studentName) {
+    // template: https://docs.google.com/presentation/d/1wkhvDVxYot6SKQ_5_EZJjIvtz0NgbTOW/edit?usp=sharing&ouid=100938278621304337607&rtpof=true&sd=true // TODO: change to the document on this account
     // TODO: Actually generate report
 }
 

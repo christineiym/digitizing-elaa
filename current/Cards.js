@@ -238,7 +238,6 @@ function createCustomizeReportsCard(className, selectedStudents) {
   for (let i = 0; i < LIMIT_MAX_EXAMPLES; i++) {  // TODO: customize max number of examples
     dropdownGroup.addItem(i, i, false);
   }
-  dropdownGroup.addItem(MAXIMUM, MAXIMUM, false);  // TODO: preselect?
   card.addSection(selectionSection);
 
   // Create the Generate Reports button.
@@ -413,7 +412,7 @@ function createNewClassSetUpCard() {
  * 
  * @return {CardService.Card} The assembled card.
  */
-function createManageStudentListCard(className) {
+function createManageStudentListCard(className, placeholders) {
   // Create a new card.
   var card = CardService.newCardBuilder();
 
@@ -427,16 +426,39 @@ function createManageStudentListCard(className) {
   infoSection.addWidget(instructionParagraph);
   card.addSection(infoSection);
 
-  // Create input fields for each student.
-  // Note: Action parameter keys and values must be strings.
-  var buttonSet = CardService.newButtonSet();
+  // Add current students to card.
   for (var student in currentStudents) {
-    var name = student;
+    var section = CardService.newCardSection();
+
+    // Display student name.
+    var nameText = CardService.newTextParagraph()
+      .setText(student);
+    section.addWidget(nameText);
+
+    // Create delete button.
+    var buttonSet = CardService.newButtonSet();
+    var buttonForm = CardService.newTextButton()
+      .setText('Delete')
+      .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
+      .setBackgroundColor(ORANGE)
+      .setOnClickAction(CardService.newAction()
+        .setFunctionName("onDeleteStudent")
+        .setParameters({ className: className, studentName: student }));
+    buttonSet.addButton(buttonForm);
+
+    section.addWidget(inputName);
+    section.addWidget(buttonSet);
+    card.addSection(section);
+  }
+
+  // Add temporary placeholders to card.
+  for (var student in placeholders.keys()) {
+    var section = CardService.newCardSection();
 
     // Create text input field for form.
     var inputName = CardService.newTextInput()
-      .setFieldName(name)
-      .setValue(name);  // set default name to be the name currently stored.
+      .setFieldName(student)
+      .setValue(placeholders.student);  // set default name to be the name currently stored.
     infoSection.addWidget(inputName);
 
     // Create delete button.
@@ -446,7 +468,7 @@ function createManageStudentListCard(className) {
       .setBackgroundColor(ORANGE)
       .setOnClickAction(CardService.newAction()
         .setFunctionName("onDeleteStudent")
-        .setParameters({ className: className, studentName: name }));
+        .setParameters({ className: className, studentName: student }));
     buttonSet.addButton(buttonForm);
 
     section.addWidget(inputName);
@@ -476,7 +498,7 @@ function createManageStudentListCard(className) {
         .setOnClickAction(
           CardService.newAction()
             .setFunctionName("onSaveStudentListEdits")
-            .setParameters({ className: className, isLastSave: true })))
+            .setParameters({ className: className })))
   card.setFixedFooter(fixedFooter);
 
   // After all necessary components are added, return the card.

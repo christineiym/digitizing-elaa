@@ -1,8 +1,10 @@
 class Classroom {
-  constructor(spreadsheetURL, formURL, formResponsesID, reportsSheetID, students) {
+  constructor(spreadsheetURL, formURL, formID, formResponsesID, studentListQID, reportsSheetID, students) {
     this.spreadsheetURL = spreadsheetURL;
     this.formURL = formURL;
+    this.formID = formID;
     this.formResponsesID = formResponsesID;
+    this.studentListQID = studentListQID;
     this.reportsSheetID = reportsSheetID;
     this.students = students;
   }
