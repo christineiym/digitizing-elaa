@@ -4,7 +4,7 @@
  * @param {Spreadsheet} ss The spreadsheet that contains the student data.
  * @param {Array<String[]>} studentList List of student names.
  */
-function setUpForm(ss, studentList) {
+function setUpForm(ss) {
     // Configure general form settings.
     var form = FormApp.create('Student Records Test Form');
     form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId())
@@ -16,7 +16,7 @@ function setUpForm(ss, studentList) {
     // Add a dropdown question that lets the user select the student.
     var itemStudent = form.addListItem();
     itemStudent.setTitle('Student Name:')
-        .setChoiceValues(allStudents);
+        .setChoiceValues([NEW_STUDENT_PLACEHOLDER]);
 
     // TODO: add instructions for setting up file upload on form
     // may make a better HTML interface in the future, but that would require Drive read/write permission.
@@ -57,11 +57,11 @@ function setUpForm(ss, studentList) {
     var itemDataType = form.addCheckboxItem();
     itemDataType.setTitle('Type of data used as evidence:')
         .setChoices([
-            item.createChoice('Anecdotal Note'),
-            item.createChoice('Work Sample'),
-            item.createChoice('Photograph'),
-            item.createChoice('Video'),
-            item.createChoice('Performance Data')
+            itemDataType.createChoice('Anecdotal Note'),
+            itemDataType.createChoice('Work Sample'),
+            itemDataType.createChoice('Photograph'),
+            itemDataType.createChoice('Video'),
+            itemDataType.createChoice('Performance Data')
         ]);
 
     // Add a free-response question for the text title.
@@ -72,24 +72,24 @@ function setUpForm(ss, studentList) {
     var itemFamiliarity = form.addMultipleChoiceItem();
     itemFamiliarity.setTitle('Familiarity of text to student:')
         .setChoices([
-            item.createChoice('Familiar'),
-            item.createChoice('Unfamiliar (New)')
+            itemFamiliarity.createChoice('Familiar'),
+            itemFamiliarity.createChoice('Unfamiliar (New)')
         ]);
 
     // Add a multiple-choice question for text type (literature/informational).
     var itemTextType = form.addMultipleChoiceItem();
     itemTextType.setTitle('Type of text:')
         .setChoices([
-            item.createChoice('Literature'),
-            item.createChoice('Informational')
+            itemTextType.createChoice('Literature'),
+            itemTextType.createChoice('Informational')
         ]);
 
     // Add a multiple choice question for level of support.
-    var itemTextType = form.addMultipleChoiceItem();
-    itemTextType.setTitle('Level of support:')
+    var itemSupportLevel = form.addMultipleChoiceItem();
+    itemSupportLevel.setTitle('Level of support:')
         .setChoices([
-            item.createChoice('Independent'),
-            item.createChoice('Guidance/Support')
+            itemSupportLevel.createChoice('Independent'),
+            itemSupportLevel.createChoice('Guidance/Support')
         ]);
 
     // Add a free response question for AT or AAC set-up.
@@ -111,7 +111,7 @@ function updateFormStudentList(className) {
     // Obtain relevant class data.
     var classInfo = JSON.parse(classesUpdated.getProperty(className));
 
-    // Update student list question.
+    // Update student list question by overwriting the student list.
     var form = FormApp.openById(classInfo.formID);
     var studentListQ = form.getItemById(classInfo.studentListQID);
     studentListQ.setChoiceValues(classInfo.students);

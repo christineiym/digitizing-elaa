@@ -31,10 +31,6 @@
         {
           "label": "Provide Feedback",
           "openLink": "https://docs.google.com/forms/d/e/1FAIpQLSfWvVxtXUXnUtUt258ypDvrdVCkJhD27tupPE5LAHPVpbnNNQ/viewform"
-        },
-        {
-          "label": "Delete Class List - DEVELOPMENT ONLY",
-          "runFunction": "deleteClassList"
         }
       ]
     },

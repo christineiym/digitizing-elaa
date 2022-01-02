@@ -124,7 +124,6 @@ function createReportGeneratorCard() {
   card.addSection(infoSection);
 
   // Create buttons for the classes created.
-  // Note: Action parameter keys and values must be strings.
   var classes = PropertiesService.getUserProperties().getProperties();
   for (var classroom in classes) {
     // Obtain access to class information.
@@ -161,7 +160,9 @@ function createSelectStudentsForReportsCard(className) {
   // Create a new card.
   var card = CardService.newCardBuilder();
 
-  var currentClassInfo = JSON.parse(classesUpdated.getProperty(className));
+  // Obtain access to current class data.
+  var classes = PropertiesService.getUserProperties()
+  var currentClassInfo = JSON.parse(classes.getProperty(className));
   var currentStudents = currentClassInfo.students;
 
   // Add instructions.
@@ -287,7 +288,7 @@ function createReportsGeneratedCard() {
         .setOnClickAction(
           CardService.newAction()
             .setFunctionName(
-              "createHomepageCard")));
+              "returnToHomepage")));
   card.setFixedFooter(fixedFooter);
 
   // After all necessary components are added, return the card.
@@ -311,7 +312,6 @@ function createClassManagerCard() {
   card.addSection(infoSection);
 
   // Create buttons for the classes created.
-  // Note: Action parameter keys and values must be strings.
   var classes = PropertiesService.getUserProperties().getProperties();
   for (var classroom in classes) {
     var name = classroom;
@@ -365,7 +365,7 @@ function createClassManagerCard() {
         .setOnClickAction(
           CardService.newAction()
             .setFunctionName(
-              "createHomepageCard")));
+              "returnToHomepage")));
   card.setFixedFooter(fixedFooter);
 
   // After all necessary components are added, return the card.
@@ -384,7 +384,7 @@ function createNewClassSetUpCard() {
   // Add instructions and area for input.
   var infoSection = CardService.newCardSection();
   var instructionParagraph = CardService.newTextParagraph()
-    .setText("<b>Please input a new class name.<i>Please note that once set, the class name cannot be changed.</i></b>");
+    .setText("<b>Please input a new class name.<br><i>Please note that once set, the class name cannot be changed.</i></b>");
   infoSection.addWidget(instructionParagraph);
   var inputName = CardService.newTextInput()
     .setFieldName("new_class_name_input")
@@ -416,7 +416,9 @@ function createManageStudentListCard(className, placeholders) {
   // Create a new card.
   var card = CardService.newCardBuilder();
 
-  var currentClassInfo = JSON.parse(classesUpdated.getProperty(className));
+  // Obtain access to current class data.
+  var classes = PropertiesService.getUserProperties()
+  var currentClassInfo = JSON.parse(classes.getProperty(className));
   var currentStudents = currentClassInfo.students;
 
   // Add title.
@@ -452,7 +454,8 @@ function createManageStudentListCard(className, placeholders) {
   }
 
   // Add temporary placeholders to card.
-  for (var student in placeholders.keys()) {
+  Logger.log(placeholders.toString());
+  for (var student in Object.keys(placeholders)) {
     var section = CardService.newCardSection();
 
     // Create text input field for form.

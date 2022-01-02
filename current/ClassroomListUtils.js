@@ -23,14 +23,14 @@ function onCreateClass(e) {
   var ssUrl = ssNew.getUrl();
   var ssReportsSheetID = ssNew.getActiveSheet().getSheetId();
 
-  var formNew = setUpForm(ssNew, STUDENT_LIST_PLACEHOLDER);
+  var formNew = setUpForm(ssNew);
   var formUrl = formNew.getPublishedUrl();
   var formID = formNew.getId();
   var formResponsesID = formNew.getDestinationId();
 
   // When the form is created, the student dropdown question will be the first dropdown.
   // Use this fact to obtain the studentListQID.
-  var studentListQ = form.getItems(FormApp.ItemType.LIST)[ZERO];
+  var studentListQ = formNew.getItems(FormApp.ItemType.LIST)[ZERO];
   var studentListQID = studentListQ.getId();
 
   newClass = new Classroom(ssUrl, formUrl, formID, formResponsesID, studentListQID, ssReportsSheetID, STUDENT_LIST_PLACEHOLDER);
@@ -38,18 +38,38 @@ function onCreateClass(e) {
   Logger.log(newClassInfo);
   PropertiesService.getUserProperties().setProperty(className, newClassInfo);
 
-  // Complete class creation process with other functions.
-  createManageStudentListCard(className, DEFAULT_PLACEHOLDER);
+  // Advance to manage student list card.
+  var card = createManageStudentListCard(className, DEFAULT_PLACEHOLDER);
+  var navigation = CardService.newNavigation()
+    .pushCard(card);
+  var actionResponse = CardService.newActionResponseBuilder()
+    .setNavigation(navigation);
+  return actionResponse.build();
 }
 
-function onDeleteClass(className) {
+function onDeleteClass(e) {
+  const classToDelete = e.commonEventObject.parameters.className;
+  Logger.log(classToDelete);
   var userProperties = PropertiesService.getUserProperties();
-  userProperties.deleteProperty(className);
+  logAllClassData();
+  userProperties.deleteProperty(classToDelete);
+  logAllClassData();
 
-  // TODO: check if should return card, or update card through a more complicated action
-  return createClassManagerCard();
+  // Refresh the card.
+  var card = createClassManagerCard();
+  var navigation = CardService.newNavigation()
+    .updateCard(card);
+  var actionResponse = CardService.newActionResponseBuilder()
+    .setNavigation(navigation);
+  return actionResponse.build();
 }
 
-function onEditClass(className) {
-  return createManageStudentListCard(className, DEFAULT_PLACEHOLDER);
+function onEditClass(e) {
+  const classToEdit = e.commonEventObject.parameters.className;
+  var card = createManageStudentListCard(classToEdit, DEFAULT_PLACEHOLDER);
+  var navigation = CardService.newNavigation()
+    .pushCard(card);
+  var actionResponse = CardService.newActionResponseBuilder()
+    .setNavigation(navigation);
+  return actionResponse.build();
 }

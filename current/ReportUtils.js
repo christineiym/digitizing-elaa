@@ -1,19 +1,25 @@
-function onSelectStudentsForReports(e, className) {
+function onSelectStudentsForReports(e) {
+    const currentClassName = e.commonEventObject.parameters.className;
     selectedStudents = e.commonEventObject.formInputs.STUDENT_LIST_SELECTIONS_FIELD_NAME.stringInputs.value;
 
-    createCustomizeReportsCard(className, selectedStudents);
+    var card = createCustomizeReportsCard(currentClassName, selectedStudents);
+    var navigation = CardService.newNavigation()
+        .pushCard(card);
+    var actionResponse = CardService.newActionResponseBuilder()
+        .setNavigation(navigation);
+    return actionResponse.build();
 }
 
-function onReportGeneration(e, className, selectedStudents) {
-    // Obtain information on startDate, endDate, and numExamples from the event object.
-    var startDate = e.commonEventObject.formInputs.START_DATE_FIELD_NAME.dateInput;
-    var endDate = e.commonEventObject.formInputs.END_DATE_FIELD_NAME.dateInput;
-    var numExamplesStr = e.commonEventObject.formInputs.MAX_EXAMPLES_FIELD_NAME.stringInputs.value[0];
-    var numExamples = parseInt(numExamplesStr);
+function onReportGeneration(e) {
+    // Obtain information on class, selected students, start date, and end date from the event object.
+    const currentClassName = e.commonEventObject.parameters.className;
+    const currentSelectedStudents = e.commonEventObject.parameters.selectedStudents;
+    const startDate = e.commonEventObject.formInputs.START_DATE_FIELD_NAME.dateInput;
+    const endDate = e.commonEventObject.formInputs.END_DATE_FIELD_NAME.dateInput;
 
-    for (student in selectedStudents) {
+    for (student in currentSelectedStudents) {
         // possible improvement: put generated documents in a dedicated folder
-        var reportLink = generateDocument(className, student);
+        var reportLink = generateDocument(currentClassName, student);
     }
 
     // TODO
