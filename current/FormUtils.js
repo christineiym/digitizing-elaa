@@ -109,10 +109,12 @@ function setUpForm(ss) {
 
 function updateFormStudentList(className) {
     // Obtain relevant class data.
-    var classInfo = JSON.parse(classesUpdated.getProperty(className));
+    var classes = PropertiesService.getUserProperties();
+    var classInfo = JSON.parse(classes.getProperty(className));
+    Logger.log(classInfo.students);
 
     // Update student list question by overwriting the student list.
     var form = FormApp.openById(classInfo.formID);
-    var studentListQ = form.getItemById(classInfo.studentListQID);
+    var studentListQ = form.getItemById(classInfo.studentListQID).asListItem();  // TODO: account for potential changes to question type
     studentListQ.setChoiceValues(classInfo.students);
 }

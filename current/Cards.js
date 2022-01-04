@@ -20,7 +20,7 @@
  * 
  * @return {CardService.Card} The assembled card.
  */
-function createHomepageCard(isHomepage) {
+ function createHomepageCard(isHomepage) {
   // Explicitly set the value of isHomepage as false if null or undefined.
   if (!isHomepage) {
     isHomepage = false;
@@ -420,6 +420,7 @@ function createManageStudentListCard(className, placeholders) {
   var classes = PropertiesService.getUserProperties()
   var currentClassInfo = JSON.parse(classes.getProperty(className));
   var currentStudents = currentClassInfo.students;
+  Logger.log(currentStudents);
 
   // Add title.
   var infoSection = CardService.newCardSection();
@@ -429,44 +430,50 @@ function createManageStudentListCard(className, placeholders) {
   card.addSection(infoSection);
 
   // Add current students to card.
-  for (var student in currentStudents) {
+  for (let i = 0; i < currentStudents.length; i++) {
+    let student = currentStudents[i];
+    Logger.log(student);
     var section = CardService.newCardSection();
 
     // Display student name.
     var nameText = CardService.newTextParagraph()
-      .setText(student);
+    nameText.setText(student);
     section.addWidget(nameText);
 
     // Create delete button.
     var buttonSet = CardService.newButtonSet();
     var buttonForm = CardService.newTextButton()
-      .setText('Delete')
+    buttonForm.setText('Delete')
       .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
       .setBackgroundColor(ORANGE)
       .setOnClickAction(CardService.newAction()
         .setFunctionName("onDeleteStudent")
         .setParameters({ className: className, studentName: student }));
     buttonSet.addButton(buttonForm);
-
-    section.addWidget(inputName);
     section.addWidget(buttonSet);
+
     card.addSection(section);
   }
 
-  // Add temporary placeholders to card.
-  Logger.log(placeholders.toString());
-  for (var student in Object.keys(placeholders)) {
+  placeholderList = Object.keys(placeholders);
+  Logger.log(placeholders);
+  Logger.log(placeholderList);
+  for (let i = 0; i < placeholderList.length; i++) {
+    var student = placeholderList[i];
+    Logger.log("Key: " + student);
+    Logger.log("Value: " + placeholders[student]);
     var section = CardService.newCardSection();
 
     // Create text input field for form.
     var inputName = CardService.newTextInput()
-      .setFieldName(student)
-      .setValue(placeholders.student);  // set default name to be the name currently stored.
+    inputName.setFieldName(student)
+      .setValue(placeholders[student].toString());  // set default name to be the name currently stored.
     infoSection.addWidget(inputName);
 
     // Create delete button.
-    var buttonForm = CardService.newTextButton()
-      .setText('Delete')
+    var buttonSet = CardService.newButtonSet();
+    var buttonForm = CardService.newTextButton();
+    buttonForm.setText('Delete')
       .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
       .setBackgroundColor(ORANGE)
       .setOnClickAction(CardService.newAction()

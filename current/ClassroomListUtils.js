@@ -39,7 +39,7 @@ function onCreateClass(e) {
   PropertiesService.getUserProperties().setProperty(className, newClassInfo);
 
   // Advance to manage student list card.
-  var card = createManageStudentListCard(className, DEFAULT_PLACEHOLDER);
+  var card = createManageStudentListCard(className, new Map());
   var navigation = CardService.newNavigation()
     .pushCard(card);
   var actionResponse = CardService.newActionResponseBuilder()
@@ -66,7 +66,7 @@ function onDeleteClass(e) {
 
 function onEditClass(e) {
   const classToEdit = e.commonEventObject.parameters.className;
-  var card = createManageStudentListCard(classToEdit, DEFAULT_PLACEHOLDER);
+  var card = createManageStudentListCard(classToEdit, new Map());
   var navigation = CardService.newNavigation()
     .pushCard(card);
   var actionResponse = CardService.newActionResponseBuilder()
