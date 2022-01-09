@@ -20,7 +20,7 @@
  * 
  * @return {CardService.Card} The assembled card.
  */
- function createHomepageCard(isHomepage) {
+function createHomepageCard(isHomepage) {
   // Explicitly set the value of isHomepage as false if null or undefined.
   if (!isHomepage) {
     isHomepage = false;
@@ -75,7 +75,7 @@
       .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
       .setBackgroundColor(ORANGE)
       .setOpenLink(CardService.newOpenLink()
-        .setUrl(clasroomDetails.spreadsheetURL)
+        .setUrl(clasroomDetails.formURL)
         .setOpenAs(CardService.OpenAs.FULL_SIZE)
         .setOnClose(CardService.OnClose.NOTHING));
     buttonSet.addButton(buttonForm);
@@ -139,7 +139,7 @@ function createReportGeneratorCard() {
       .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
       .setBackgroundColor(ORANGE)
       .setOnClickAction(CardService.newAction()
-        .setFunctionName("createSelectStudentsForReportsCard")
+        .setFunctionName("onSelectClassForReports")
         .setParameters({ className: name }));
     buttonSet.addButton(buttonSpreadsheet);
 
@@ -161,7 +161,7 @@ function createSelectStudentsForReportsCard(className) {
   var card = CardService.newCardBuilder();
 
   // Obtain access to current class data.
-  var classes = PropertiesService.getUserProperties()
+  var classes = PropertiesService.getUserProperties();
   var currentClassInfo = JSON.parse(classes.getProperty(className));
   var currentStudents = currentClassInfo.students;
 
@@ -178,9 +178,11 @@ function createSelectStudentsForReportsCard(className) {
     .setType(CardService.SelectionInputType.CHECK_BOX)
     .setTitle("Students")
     .setFieldName(STUDENT_LIST_SELECTIONS_FIELD_NAME);
-  for (var student in currentStudents) {
+  for (let i = 0; i < currentStudents.length; i++) {
+    let student = currentStudents[i];
     checkboxGroup.addItem(student, student, true);
   }
+  selectionSection.addWidget(checkboxGroup);
   card.addSection(selectionSection);
 
   // Create the Next button.
@@ -215,18 +217,21 @@ function createCustomizeReportsCard(className, selectedStudents) {
   card.addSection(infoSection);
 
   // Set start and end dates.
+  const today = new Date();
+  // var pastDay = new Date();
+  // pastDay.setFullYear(today.getFullYear() - ONE_YEAR_INCREMENT);
   var dateSection = CardService.newCardSection();
   var startDatePicker = CardService.newDatePicker()
     .setTitle("Start Date:")
     .setFieldName(START_DATE_FIELD_NAME)
     // Set default value to approximately one year before today
-    .setValueInMsSinceEpoch(new Date().setFullYear(new Date().getFullYear() - ONE_YEAR_INCREMENT).getTime());
+    .setValueInMsSinceEpoch(today.getTime());
   dateSection.addWidget(startDatePicker);
   var endDatePicker = CardService.newDatePicker()
     .setTitle("End Date:")
     .setFieldName(END_DATE_FIELD_NAME)
     // Set default value to today
-    .setValueInMsSinceEpoch(new Date().getTime());
+    .setValueInMsSinceEpoch(today.getTime());
   dateSection.addWidget(endDatePicker);
   card.addSection(dateSection);
 
@@ -237,8 +242,10 @@ function createCustomizeReportsCard(className, selectedStudents) {
     .setTitle("Maximum number of examples to include:")
     .setFieldName(MAX_EXAMPLES_FIELD_NAME);
   for (let i = 0; i < LIMIT_MAX_EXAMPLES; i++) {  // TODO: customize max number of examples
-    dropdownGroup.addItem(i, i, false);
+    let option = i + 1;
+    dropdownGroup.addItem(option.toString(), option.toString(), false);
   }
+  selectionSection.addWidget(dropdownGroup);
   card.addSection(selectionSection);
 
   // Create the Generate Reports button.

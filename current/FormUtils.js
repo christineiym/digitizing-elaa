@@ -94,7 +94,7 @@ function setUpForm(ss) {
 
     // Add a free response question for AT or AAC set-up.
     var itemSetup = form.addParagraphTextItem();
-    itemSetup.setTitle('Notes and description of AT or AAC was set up for student use:');
+    itemSetup.setTitle('Notes and description of how AT or AAC was set up for student use:');
 
     // Add a free response question for the observation context and explanation of score.
     var itemObservationScoring = form.addParagraphTextItem();
@@ -117,4 +117,5 @@ function updateFormStudentList(className) {
     var form = FormApp.openById(classInfo.formID);
     var studentListQ = form.getItemById(classInfo.studentListQID).asListItem();  // TODO: account for potential changes to question type
     studentListQ.setChoiceValues(classInfo.students);
+    return;
 }
