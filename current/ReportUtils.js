@@ -34,10 +34,27 @@ function onReportGeneration(e) {
     const startDate = e.commonEventObject.formInputs[START_DATE_FIELD_NAME].dateInput;
     const endDate = e.commonEventObject.formInputs[END_DATE_FIELD_NAME].dateInput;
 
-    Logger.log(currentSelectedStudents);
+    // Obtain access to the spreadsheet with class data.
+    var classes = PropertiesService.getUserProperties();
+    Logger.log(classes);
+    var currentClassInfo = JSON.parse(classes.getProperty(currentClassName));
+    var ss = SpreadsheetApp.openByUrl(currentClassInfo.spreadsheetURL);
+    SpreadsheetApp.setActiveSpreadsheet(ss);
+    var classDataSheet = SpreadsheetApp.setActiveSheet(ss.getSheets()[0]);  // TODO: allow for reordering (how?)
+    var classData = classDataSheet.getDataRange();
+    var allClassData = classData.getValues();
+    classData.activate();
 
-    // // TODO
-    // // Copy FormResponses sheet to a new sheet
+    Logger.log(allClassData);
+    // TODO: Copy FormResponses sheet to a new sheet?
+
+    // Logger.log(COLUMNS);
+    // Logger.log(TEMPLATE_PLACEHOLDERS);
+    // Logger.log(TEMPLATE);
+
+    // Filter sheet by date
+    // var dateFilter = classData.createFilter();
+
     // // Filter sheet by date
 
     // for (student in currentSelectedStudents) {
