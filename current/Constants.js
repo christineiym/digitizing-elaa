@@ -11,6 +11,14 @@ const LIMIT_MAX_EXAMPLES = 3;  // TODO: change to a clearer name
 const MAXIMUM = "Maximum";
 const ZERO = 0;
 const DEFAULT_PLACEHOLDER = {};
+const TEMPLATE_URL = "https://docs.google.com/presentation/d/1OIRWiXMlvBu221rMOR6aO-dVU3mbcoP1O5OvhgeAQlQ/edit?usp=sharing";
+const NEW_LINE = "\n";
+
+// 1-indexed column locations
+const TIMESTAMP_COLUMN = 1;
+const NAME_COLUMN = 2;
+const SCALE_COLUMN_START = 3;
+const SCALE_COLUMN_END = 8;
 
 const COLUMNS = {
     TIMESTAMP: 0,
@@ -34,23 +42,15 @@ const COLUMNS = {
 Object.freeze(COLUMNS);
 
 // Template Placeholders
-STUDENT_NAME = "student_name"
-STUDENT_ID = "student_id"
-STUDENT_GRADE = "student_grade"
-DATE = "date"
-TEXT_TITLE = "text_title"
-AT_OR_AAC_SET_UP = "AT_or_AAC_set_up"
-EXPLANATION = "context_or_scoring_explanation"
-
-const TEMPLATE_PLACEHOLDERS = [
-    STUDENT_NAME,
-    STUDENT_ID,
-    STUDENT_GRADE,
-    DATE,
-    TEXT_TITLE,
-    AT_OR_AAC_SET_UP,
-    EXPLANATION
-]
+const TEMPLATE_PLACEHOLDERS = {
+    STUDENT_NAME: "{{student_name}}",
+    STUDENT_ID: "{{student_id}}",
+    STUDENT_GRADE: "{{student_grade}}",
+    DATE: "{{date}}",
+    TEXT_TITLE: "{{text_title}}",
+    AT_OR_AAC_SET_UP: "{{AT_or_AAC_set_up}}",
+    EXPLANATION: "{{context_or_scoring_explanation}}"
+};
 
 const TEMPLATE = {
     BACKGROUND: 0,
@@ -65,12 +65,12 @@ const TEMPLATE = {
     },
     EVIDENCE_NUMBER: {
         START: 8,
-        END: 10
+        END: 10  // TODO: check if END is necessary
     },
     STUDENT_PERFORMANCE_SCORE: {
         E: 11,
         START: 12,
-        END: 29
+        END: 29  // TODO: check if END is necessary
     },
     DATA_TYPE: {
         ANECDOTAL_NOTE: 30,
