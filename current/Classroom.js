@@ -1,3 +1,6 @@
+/**
+ * Class definition for representing a 'class' (Classroom) of students.
+ */
 class Classroom {
   constructor(spreadsheetURL, formURL, formID, formResponsesID, studentListQID, reportsSheetID, students) {
     this.spreadsheetURL = spreadsheetURL;

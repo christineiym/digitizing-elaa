@@ -1,8 +1,7 @@
 /**
- * Creates a Google Form that allows respondents to rate a certain student's work.
+ * Create a Google Form that allows respondents to rate a certain student's work.
  *
  * @param {Spreadsheet} ss The spreadsheet that contains the student data.
- * @param {Array<String[]>} studentList List of student names.
  */
 function setUpForm(ss) {
     // Configure general form settings.
@@ -107,6 +106,12 @@ function setUpForm(ss) {
     return form;
 }
 
+
+/**
+ * Update the choices for Student on the form.
+ *
+ * @param {String} className The name of the class to choose students from.
+ */
 function updateFormStudentList(className) {
     // Obtain relevant class data.
     var classes = PropertiesService.getUserProperties();

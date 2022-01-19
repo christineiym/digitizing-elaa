@@ -3,12 +3,13 @@
   "dependencies": {},
   "exceptionLogging": "STACKDRIVER",
   "oauthScopes": [
+    "https://www.googleapis.com/auth/script.locale",
     "https://www.googleapis.com/auth/drive.appdata",
-    "https://www.googleapis.com/auth/spreadsheets.currentonly",
-    "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/forms.currentonly",
     "https://www.googleapis.com/auth/forms",
-    "https://www.googleapis.com/auth/script.locale"
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/presentations.currentonly",
+    "https://www.googleapis.com/auth/presentations"
   ],
   "urlFetchWhitelist": [
     "https://docs.google.com/"

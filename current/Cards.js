@@ -15,15 +15,17 @@
  * clicking the three dots at the top and filling out the form accessed through 'Provide Feedback'.
  */
 
+
 /**
  * Creates the homepage card.
  * 
+ * @param {Boolean} isHomepage Whether or not the card is a homepage. Defaults to true.
  * @return {CardService.Card} The assembled card.
  */
 function createHomepageCard(isHomepage) {
-  // Explicitly set the value of isHomepage as false if null or undefined.
+  // Explicitly set the value of isHomepage as true if null or undefined.
   if (!isHomepage) {
-    isHomepage = false;
+    isHomepage = true;
   }
 
   // Create a new card.
@@ -107,6 +109,7 @@ function createHomepageCard(isHomepage) {
   return card.build();
 }
 
+
 /**
  * Creates the report generator card.
  * 
@@ -151,9 +154,11 @@ function createReportGeneratorCard() {
   return card.build();
 }
 
+
 /**
  * Creates the select students for reports card.
  * 
+ * @param {String} className The name of the class to choose students from.
  * @return {CardService.Card} The assembled card.
  */
 function createSelectStudentsForReportsCard(className) {
@@ -200,9 +205,12 @@ function createSelectStudentsForReportsCard(className) {
   return card.build();
 }
 
+
 /**
  * Creates the customize reports card.
  * 
+ * @param {String} className The name of the class to choose students from.
+ * @param {String} selectedStudents String representation of the list of students chosen.
  * @return {CardService.Card} The assembled card.
  */
 function createCustomizeReportsCard(className, selectedStudents) {
@@ -263,6 +271,7 @@ function createCustomizeReportsCard(className, selectedStudents) {
   return card.build();
 }
 
+
 /**
  * Creates the reports generated confirmation card.
  * 
@@ -283,14 +292,6 @@ function createReportsGeneratedCard() {
   var fixedFooter = CardService.newFixedFooter()
     .setPrimaryButton(
       CardService.newTextButton()
-        .setText("View Reports")
-        // TODO: change to link to reports sheet within spreadsheet
-        .setOpenLink(CardService.newOpenLink()
-          .setUrl(clasroomDetails.spreadsheetURL)
-          .setOpenAs(CardService.OpenAs.FULL_SIZE)
-          .setOnClose(CardService.OnClose.NOTHING)))
-    .setSecondaryButton(
-      CardService.newTextButton()
         .setText("Home")
         .setOnClickAction(
           CardService.newAction()
@@ -301,6 +302,7 @@ function createReportsGeneratedCard() {
   // After all necessary components are added, return the card.
   return card.build();
 }
+
 
 /**
  * Creates the class manager card.
@@ -379,6 +381,7 @@ function createClassManagerCard() {
   return card.build();
 }
 
+
 /**
  * Creates the new class set-up card.
  * 
@@ -414,9 +417,12 @@ function createNewClassSetUpCard() {
   return card.build();
 }
 
+
 /**
  * Creates the manage student list card.
  * 
+ * @param {String} className The name of the class to choose students from.
+ * @param {Object} placeholders Placeholders for students being added.
  * @return {CardService.Card} The assembled card.
  */
 function createManageStudentListCard(className, placeholders) {
@@ -521,6 +527,7 @@ function createManageStudentListCard(className, placeholders) {
   // After all necessary components are added, return the card.
   return card.build();
 }
+
 
 /**
  * Creates the about card.

@@ -1,11 +1,9 @@
-function objectToClassroom(raw) {
-  // New object v. global variables?
-  return new Classroom(raw.spreadsheetID, raw.formID, raw.formResponsesID, raw.reportsSheetID, raw.students);
-}
-
 /**
  * Callback for creating a class.
  * 
+ * @param {Object} e The event object, documented {@link
+ *  https://developers.google.com/gmail/add-ons/concepts/actions#action_event_objects
+ *  here}.
  * @return {CardService.ActionResponse} The action response to apply.
  */
 function onCreateClass(e) {
@@ -16,8 +14,8 @@ function onCreateClass(e) {
   // Create new spreadsheet for the class.
   var ssNew = SpreadsheetApp.create("My Class Records: " + className);
   var first = ssNew.getSheetByName("Sheet1");
-  first.setName("Reports");
-  first.appendRow(['Student Name']);
+  first.setName("Notes");  // Should be 'Reports'
+  // first.appendRow(['Student Name']);
   ssNew.setActiveSheet(first);
 
   var ssUrl = ssNew.getUrl();
@@ -47,6 +45,15 @@ function onCreateClass(e) {
   return actionResponse.build();
 }
 
+
+/**
+ * Callback for deleting a class.
+ * 
+ * @param {Object} e The event object, documented {@link
+ *  https://developers.google.com/gmail/add-ons/concepts/actions#action_event_objects
+ *  here}.
+ * @return {CardService.ActionResponse} The action response to apply.
+ */
 function onDeleteClass(e) {
   const classToDelete = e.commonEventObject.parameters.className;
   Logger.log(classToDelete);
@@ -64,6 +71,15 @@ function onDeleteClass(e) {
   return actionResponse.build();
 }
 
+
+/**
+ * Callback for editing who is in a class.
+ * 
+ * @param {Object} e The event object, documented {@link
+ *  https://developers.google.com/gmail/add-ons/concepts/actions#action_event_objects
+ *  here}.
+ * @return {CardService.ActionResponse} The action response to apply.
+ */
 function onEditClass(e) {
   const classToEdit = e.commonEventObject.parameters.className;
   var card = createManageStudentListCard(classToEdit, new Map());

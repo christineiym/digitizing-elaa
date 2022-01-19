@@ -1,0 +1,229 @@
+Deployments
+Create
+Close
+
+Latest Version (Head)
+Version 0
+(Some info is missing; see Google Apps Script editor for other deployments)
+____
+
+test when userProperties updates
+Version 67
+
+Install add-onGet IDEditDelete
+
+removing erroneous referencing of properties before assignment
+Version 66
+
+Install add-onGet IDEditDelete
+
+add call to getProperties
+Version 65
+
+Install add-onGet IDEditDelete
+
+fix var name
+Version 64
+
+Install add-onGet IDEditDelete
+
+account for not-immediate accessing of properties
+Version 63
+
+Install add-onGet IDEditDelete
+
+adding a set property
+Version 62
+
+Install add-onGet IDEditDelete
+
+Enhanced logging
+Version 61
+
+Install add-onGet IDEditDelete
+
+don't return formUrl
+Version 60
+
+Install add-onGet IDEditDelete
+
+properties edits
+Version 59
+
+Install add-onGet IDEditDelete
+
+uncommented set url properties
+Version 58
+
+Install add-onGet IDEditDelete
+
+testing userproperties again
+Version 57
+
+Install add-onGet IDEditDelete
+
+not adding properties
+Version 56
+
+Install add-onGet IDEditDelete
+____
+
+check if URL
+Version 52
+
+fix variable names
+Version 51
+
+need to see what is in user properties
+Version 50
+
+still checking key length
+Version 49
+
+check for emptiness in key, theoretically
+Version 48
+
+changed urls
+Version 47
+
+fix indent
+Version 46
+
+trying to remedy properties
+Version 45
+
+putting back links
+Version 44
+
+add ;
+Version 43
+
+clearing properties
+Version 42
+
+removing links to urls
+Version 41
+
+trying to make sure passing in str
+Version 40
+
+removing past sections
+Version 39
+
+whitelisted url
+Version 38
+
+adding widget with button to sectionNew
+Version 37
+
+taking out add property
+Version 36
+
+buttonSetNew
+Version 35
+
+better sections in card
+Version 34
+
+test initial button
+Version 33
+
+add button
+Version 32
+
+add ;
+Version 31
+
+fix buttonSet
+Version 30
+
+fixing get properties
+Version 29
+
+remember classes
+Version 28
+
+test properties again (list)
+Version 27
+
+when you put a new sheet in your spreadsheet to see what you are supposed to see in the log
+Version 26
+
+fix homepage not defined error
+Version 25
+
+add Properties access
+Version 24
+
+trying to access app Data Folder
+Version 23
+
+fix buttonSet
+Version 22
+
+separate buttons
+Version 21
+
+add form
+Version 20
+
+access spreadsheets made
+Version 19
+
+remove trigger drive file metadata
+Version 18
+
+remove restricted oauth permissions
+Version 17
+
+spreadsheet access
+Version 16
+
+change oauth
+Version 15
+
+read/write google drive
+Version 14
+
+folder
+Version 13
+
+Change logo
+Version 12
+
+trimUnecessary
+Version 11
+
+revertToOldSettings
+Version 10
+
+
+
+backToPaw
+Version 9
+Get IDEditDelete
+
+updatemanifest2
+Version 8
+Get IDEditDelete
+
+testUpdateManifest
+Version 7
+Get IDEditDelete
+
+test2
+Version 6
+
+
+
+test1
+Version 5
+
+
+
+update url
+Version 4
+
+
+
+Install add-onGet IDEditDelete
